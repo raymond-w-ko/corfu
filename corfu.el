@@ -50,7 +50,7 @@
   :group 'matching
   :prefix "corfu-")
 
-(defcustom corfu-count 10
+(defcustom corfu-count 8
   "Maximal number of candidates to show."
   :type 'natnum)
 
