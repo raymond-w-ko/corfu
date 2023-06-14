@@ -1042,7 +1042,7 @@ A scroll bar is displayed from LO to LO+BAR."
              (y (if (< y 0) yb y))
              (lines (reverse lines))
              (curr (- n curr 1))
-             (lo (- n lo 1))
+             (lo (when lo (- n lo 1)))
              (row 0))
         (with-silent-modifications
           (erase-buffer)
