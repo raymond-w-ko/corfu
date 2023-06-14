@@ -1029,9 +1029,10 @@ A scroll bar is displayed from LO to LO+BAR."
                              (propertize " " 'face 'corfu-bar 'display `(space :width (,bw))))))
              (pos (posn-x-y pos))
              (width (+ (* width cw) ml mr))
+             (n (length lines))
              ;; XXX HACK: Minimum popup height must be at least 1 line of the
              ;; parent frame (gh:minad/corfu#261).
-             (height (max lh (* (length lines) ch)))
+             (height (max lh (* n ch)))
              (edge (window-inside-pixel-edges))
              (border (alist-get 'internal-border-width corfu--frame-parameters))
              (x (max 0 (min (+ (car edge) (- (or (car pos) 0) ml (* cw off) border))
@@ -1039,12 +1040,17 @@ A scroll bar is displayed from LO to LO+BAR."
              (yb (+ (cadr edge) (window-tab-line-height) (or (cdr pos) 0) lh))
              (y (- yb height lh border border))
              (y (if (< y 0) yb y))
+             (lines (reverse lines))
+             (curr (- n curr 1))
+             (lo (- n lo 1))
              (row 0))
         (with-silent-modifications
           (erase-buffer)
           (insert (mapconcat (lambda (line)
                                (let ((str (concat marginl line
-                                                  (if (and lo (<= lo row (+ lo bar)))
+                                                  (if (and lo
+                                                           (< (- lo bar) row)
+                                                           (<= row lo))
                                                       sbar
                                                     marginr))))
                                  (when (eq row curr)
@@ -1052,8 +1058,7 @@ A scroll bar is displayed from LO to LO+BAR."
                                     0 (length str) 'corfu-current 'append str))
                                  (cl-incf row)
                                  str))
-                             lines "\n"))
-          (goto-char (point-min)))
+                             lines "\n")))
         (setq corfu--frame (corfu--make-frame corfu--frame x y
                                               width height (current-buffer)))))))
 
