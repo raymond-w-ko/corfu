@@ -1039,20 +1039,29 @@ A scroll bar is displayed from LO to LO+BAR."
                             (- (frame-pixel-width) width))))
              (yb (+ (cadr edge) (window-tab-line-height) (or (cdr pos) 0) lh))
              (y (- yb height lh border border))
+             (show-below-line (< y 0))
              (y (if (< y 0) yb y))
-             (lines (reverse lines))
-             (curr (- n curr 1))
-             (lo (when lo (- n lo 1)))
+             (lines (if show-below-line
+                        lines
+                      (reverse lines)))
+             (curr (if show-below-line
+                       curr
+                     (- n curr 1)))
+             (lo (if show-below-line
+                     lo
+                   (when lo (- n lo 1))))
              (row 0))
         (with-silent-modifications
           (erase-buffer)
           (insert (mapconcat (lambda (line)
-                               (let ((str (concat marginl line
-                                                  (if (and lo
-                                                           (< (- lo bar) row)
-                                                           (<= row lo))
-                                                      sbar
-                                                    marginr))))
+                               (let* ((render-sbar
+                                       (if show-below-line
+                                           (and lo (<= lo row) (< row (+ lo bar)))
+                                         (and lo (< (- lo bar) row) (<= row lo))))
+                                      (str (concat marginl line
+                                                   (if render-sbar
+                                                       sbar
+                                                     marginr))))
                                  (when (eq row curr)
                                    (add-face-text-property
                                     0 (length str) 'corfu-current 'append str))
