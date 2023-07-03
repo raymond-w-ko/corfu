@@ -253,8 +253,9 @@ See also the settings `corfu-auto-delay', `corfu-auto-prefix' and
   ;; XXX [tab] is bound because of org-mode and orgtbl-mode.
   ;; The binding should be removed from org-mode-map.
   "<tab>" #'corfu-complete
-  "M-n" #'corfu-next
-  "M-p" #'corfu-previous
+  ;; These bindings conflict with suggested copilot.el
+  ;; "M-n" #'corfu-next
+  ;; "M-p" #'corfu-previous
   "C-g" #'corfu-quit
   "RET" #'corfu-insert
   "TAB" #'corfu-complete
