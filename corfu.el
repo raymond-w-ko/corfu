@@ -257,7 +257,7 @@ See also the settings `corfu-auto-delay', `corfu-auto-prefix' and
   ;; "M-n" #'corfu-next
   ;; "M-p" #'corfu-previous
   "C-g" #'corfu-quit
-  "RET" #'corfu-insert
+  ;; "RET" #'corfu-insert
   "TAB" #'corfu-complete
   "M-g" 'corfu-info-location
   "M-h" 'corfu-info-documentation
