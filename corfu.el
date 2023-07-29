@@ -261,7 +261,7 @@ See also the settings `corfu-auto-delay', `corfu-auto-prefix' and
   "TAB" #'corfu-complete
   "M-g" 'corfu-info-location
   "M-h" 'corfu-info-documentation
-  "M-SPC" #'corfu-insert-separator)
+  "C-M-SPC" #'corfu-insert-separator)
 
 (defvar corfu--auto-timer (timer-create)
   "Auto completion timer.")
