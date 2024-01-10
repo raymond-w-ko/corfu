@@ -987,6 +987,11 @@ See `completion-in-region' for the arguments BEG, END, TABLE, PRED."
          (corfu--setup beg end table (plist-get plist :predicate))
          (corfu--exhibit 'auto))))))
 
+(defun corfu-insert-mode-p ()
+  "Return non-nil if the current buffer is in insert mode."
+  (or (and (boundp 'evil-state) (eq evil-state 'insert))
+      (and (boundp 'xah-fly-insert-state-p) xah-fly-insert-state-p)))
+
 (defun corfu--auto-post-command ()
   "Post command hook which initiates auto completion."
   (cancel-timer corfu--auto-timer)
@@ -994,7 +999,8 @@ See `completion-in-region' for the arguments BEG, END, TABLE, PRED."
            (not defining-kbd-macro)
            (not buffer-read-only)
            (corfu--match-symbol-p corfu-auto-commands this-command)
-           (corfu--popup-support-p))
+           (corfu--popup-support-p)
+           (corfu-insert-mode-p))
       (if (<= corfu-auto-delay 0)
           (corfu--auto-complete-deferred)
         ;; Do not use `timer-set-idle-time' since this leads to
