@@ -1037,9 +1037,8 @@ A scroll bar is displayed from LO to LO+BAR."
              (x (max 0 (min (+ (car edge) (- (or (car pos) 0) ml (* cw off) border))
                             (- (frame-pixel-width) width))))
              (yb (+ (cadr edge) (window-tab-line-height) (or (cdr pos) 0) lh))
-             (y (if (> (+ yb (* corfu-count ch) lh lh) (frame-pixel-height))
-                    (- yb height lh border border)
-                  yb))
+             (y (- yb height lh border border))
+             (y (if (< y 0) yb y))
              (row 0))
         (with-silent-modifications
           (erase-buffer)
